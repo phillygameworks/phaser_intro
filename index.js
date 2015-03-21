@@ -12,6 +12,8 @@ var platforms;
 var player;
 var cursors;
 var stars;
+var score = 0;
+var scoreText;
 
 function create() {
 
@@ -77,6 +79,9 @@ function create() {
         star.body.bounce.y = 0.7 + Math.random() * 0.2;
     }
 
+    //  The score
+    scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
 }
@@ -123,4 +128,7 @@ function collectStar(player, star) {
     // Removes the star from the screen
     star.kill();
 
+    //  Add and update the score
+    score += 10;
+    scoreText.text = 'Score: ' + score;
 }

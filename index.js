@@ -60,4 +60,7 @@ function create() {
 }
 
 function update() {
+
+    //  Collide the player and the stars with the platforms
+    game.physics.arcade.collide(player, platforms);
 }

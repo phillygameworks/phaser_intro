@@ -6,6 +6,7 @@ function preload() {
     game.load.image('ground', 'assets/platform.png');
     game.load.image('star', 'assets/star.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    game.load.audio('pickup', 'assets/KirbyStyleLaser.ogg');
  }
 
 var platforms;
@@ -14,6 +15,7 @@ var cursors;
 var stars;
 var score = 0;
 var scoreText;
+var starPickup;
 
 function create() {
 
@@ -84,6 +86,9 @@ function create() {
 
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
+
+// Add the audio for picking up a star
+    starPickup = game.add.audio('pickup');
 }
 
 function update() {
@@ -127,6 +132,7 @@ function collectStar(player, star) {
 
     // Removes the star from the screen
     star.kill();
+    starPickup.play();
 
     //  Add and update the score
     score += 10;

@@ -7,6 +7,7 @@ function preload() {
     game.load.image('star', 'assets/star.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     game.load.audio('pickup', 'assets/KirbyStyleLaser.ogg');
+    game.load.audio('sfx', 'assets/fx_mixdown.ogg');
  }
 
 var platforms;
@@ -16,6 +17,7 @@ var stars;
 var score = 0;
 var scoreText;
 var starPickup;
+var fx;
 
 function create() {
 
@@ -87,8 +89,26 @@ function create() {
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
 
-// Add the audio for picking up a star
+    // Add the audio for picking up a star
     starPickup = game.add.audio('pickup');
+
+    // Set up an audio sprite
+    fx = game.add.audio('sfx');
+    fx.allowMultiple = true;
+
+    //	And this defines the markers.
+    //	They consist of a key (for replaying), the time the sound starts and the duration, both given in seconds.
+    //	You can also set the volume and loop state, although we don't use them in this example (see the docs)
+
+    fx.addMarker('alien death', 1, 1.0);
+    fx.addMarker('boss hit', 3, 0.5);
+    fx.addMarker('escape', 4, 3.2);
+    fx.addMarker('meow', 8, 0.5);
+    fx.addMarker('numkey', 9, 0.1);
+    fx.addMarker('ping', 10, 1.0);
+    fx.addMarker('death', 12, 4.2);
+    fx.addMarker('shot', 17, 1.0);
+    fx.addMarker('squit', 19, 0.3);
 }
 
 function update() {
@@ -132,7 +152,8 @@ function collectStar(player, star) {
 
     // Removes the star from the screen
     star.kill();
-    starPickup.play();
+    //starPickup.play();
+    fx.play('ping');
 
     //  Add and update the score
     score += 10;

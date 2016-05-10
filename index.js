@@ -71,17 +71,7 @@ function create() {
     //  We will enable physics for any star that is created in this group
     stars.enableBody = true;
 
-    //  Here we'll create 12 of them evenly spaced apart
-    for (var i = 0; i < 12; i++) {
-        //  Create a star inside of the 'stars' group
-        var star = stars.create(i * 70, 0, 'star');
-
-        //  Let gravity do its thing
-        star.body.gravity.y = 300;
-
-        //  This just gives each star a slightly random bounce value
-        star.body.bounce.y = 0.7 + Math.random() * 0.2;
-    }
+    createStars();
 
     //  The score
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
@@ -171,10 +161,31 @@ function collectStar(player, star) {
 
     // Removes the star from the screen
     star.kill();
-    //starPickup.play();
     fx.play('ping');
 
     //  Add and update the score
     score += 10;
     scoreText.text = 'Score: ' + score;
+
+    var starsAlive = stars.children.filter(function (x) {
+        return x.alive === true;
+    });
+
+    if (starsAlive.length === 0) {
+        createStars();
+    }
+}
+
+function createStars() {
+    //  Here we'll create 12 of them evenly spaced apart
+    for (var i = 0; i < 12; i++) {
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(i * 70, 0, 'star');
+
+        //  Let gravity do its thing
+        star.body.gravity.y = 300;
+
+        //  This just gives each star a slightly random bounce value
+        star.body.bounce.y = 0.7 + Math.random() * 0.2;
+    }
 }

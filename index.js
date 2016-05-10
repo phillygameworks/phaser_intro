@@ -122,23 +122,42 @@ function update() {
 
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
+    
+    // Gamepad support
+    var gamepads = navigator.getGamepads();
+    if (gamepads.length > 0 && gamepads[0] !== undefined) {
+ 
+        var maybeVelocity = gamepads[0].axes[0] * 150;
+        if (maybeVelocity > -20 & maybeVelocity < 20) {
+            maybeVelocity = 0;
+        }
 
+        player.body.velocity.x = maybeVelocity;
+
+        if ((gamepads[0].buttons[0].pressed === true) && player.body.touching.down) {
+            player.body.velocity.y = -350;
+        }
+    }    
+
+    // keyboard support
     if (cursors.left.isDown) {
         //  Move to the left
         player.body.velocity.x = -150;
-
-        player.animations.play('left');
     }
     else if (cursors.right.isDown) {
         //  Move to the right
         player.body.velocity.x = 150;
-
+    }
+    
+    // use velocity to determine animation status
+    if (player.body.velocity.x > 0) {
         player.animations.play('right');
     }
+    else if (player.body.velocity.x < 0) {
+        player.animations.play('left');
+    }
     else {
-        //  Stand still
         player.animations.stop();
-
         player.frame = 4;
     }
 
